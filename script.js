@@ -1,6 +1,5 @@
 const ENCODED_WEBHOOK = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTUyNDA3MDI2NDk0ODc4OTUzOS9yQ1QzRUhrU1hxRUVCRHlGbC1pVFRMSUF4YmtjNHVFRmZ4Smp6TWNKNGFTMlZIb0ZlUnFqVXlTTXAzemZTWE1DNnFzag=="; 
 
-// 2. ДОВІДНИК РОЛЕЙ (Заміни цифри на реальні ID ролей із твого Discord)
 const DISCORD_ROLES = {
     "ALL": "@here",                 
     "GROUP_A": "<@&123456789012345678>", 
@@ -28,7 +27,6 @@ async function handleAction(type, minutes = 0) {
     const webhookUrl = getWebhookUrl();
     const savedMessageId = localStorage.getItem("radar_msg_id");
 
-    // ЛОГІКА 1: ПОВНЕ ВИДАЛЕННЯ СЛОТУ (ОФЛАЙН)
     if (type === 'offline') {
         if (savedMessageId) {
             await deleteMessage(webhookUrl, savedMessageId);
@@ -40,12 +38,10 @@ async function handleAction(type, minutes = 0) {
         return;
     }
 
-    // ЛОГІКА 2: ОЧИЩЕННЯ ТАЙМЕРІВ (СКИДАННЯ ЧАСУ БЕЗ ВИДАЛЕННЯ СЛОТУ)
     if (type === 'clear_time') {
         if (savedMessageId) {
             localStorage.removeItem("radar_active_until");
             localStorage.removeItem("radar_pause_minutes");
-            // Продовжуємо виконання коду далі, щоб оновити повідомлення в Discord на пусте
         } else {
             alert("У тебе немає активного слоту, щоб скидати час.");
             return;
@@ -58,7 +54,6 @@ async function handleAction(type, minutes = 0) {
 
     const currentUnix = Math.floor(Date.now() / 1000);
     
-    // Перевіряємо або створюємо час старту сесії
     let startStatusTime = localStorage.getItem("radar_start_time");
     if (!startStatusTime || !savedMessageId) {
         const now = new Date();
@@ -66,14 +61,12 @@ async function handleAction(type, minutes = 0) {
         localStorage.setItem("radar_start_time", startStatusTime);
     }
 
-    // Зчитуємо поточні збережені дані
     let savedActiveUntil = localStorage.getItem("radar_active_until");
     let savedPauseMinutes = localStorage.getItem("radar_pause_minutes");
     
     let activeUntilUnix = savedActiveUntil ? parseInt(savedActiveUntil) : currentUnix;
     let totalPauseMinutes = savedPauseMinutes ? parseInt(savedPauseMinutes) : 0;
 
-    // Обробка накопичення часу
     if (type === 'active') {
         if (activeUntilUnix <= currentUnix) {
             activeUntilUnix = currentUnix;
@@ -85,30 +78,23 @@ async function handleAction(type, minutes = 0) {
         localStorage.setItem("radar_pause_minutes", totalPauseMinutes);
     }
 
-    // КОНСТРУКТОР ПОВІДОМЛЕННЯ (ЗШИВАННЯ 4 ЧАСТИН)
-    
-    // Частина 1: Базовий статус
     let part1 = `🟢 **${username}** вільний з ${startStatusTime} `;
     
-    // Частина 2: Час активності (якщо він більший за поточний момент)
     let part2 = "";
     if (activeUntilUnix > currentUnix) {
         part2 = `| актуально до <t:${activeUntilUnix}:t> (<t:${activeUntilUnix}:R>) `;
     }
 
-    // Частина 3: Запланована перерва
     let part3 = "";
     if (totalPauseMinutes > 0) {
         part3 = `| ⏳ Запланована пауза: **${totalPauseMinutes} хв** `;
     }
 
-    // Частина 4: Контекст дозвілля та пінги ролей
     let part4 = `| Напрям: **${selectedActivity}** | ${rolePing}`;
 
     const finalContent = `${part1}${part2}${part3}${part4}`;
     const payload = { content: finalContent };
 
-    // Запит до Discord (PATCH або POST)
     if (savedMessageId) {
         fetch(`${webhookUrl}/messages/${savedMessageId}`, {
             method: "PATCH",
