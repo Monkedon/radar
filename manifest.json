@@ -1,0 +1,21 @@
+{
+  "short_name": "Радар",
+  "name": "Радар Активності та Статусів",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#2f3136",
+  "theme_color": "#7289da",
+  "display": "standalone",
+  "orientation": "portrait"
+}

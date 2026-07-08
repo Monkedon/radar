@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Універсальний Радар Статусів</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #2f3136; color: #fff; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 400px; width: 100%; background: #36393f; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        h2 { text-align: center; margin-bottom: 20px; color: #7289da; }
+        label { display: block; margin: 12px 0 6px; font-weight: bold; color: #b9bbbe; }
+        input, select, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: none; box-sizing: border-box; }
+        input, select { background: #40444b; color: #fff; }
+        button { font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-main { background: #43b581; color: white; }
+        .btn-main:hover { background: #3ca374; }
+        .btn-pause { background: #faa61a; color: white; }
+        .btn-pause:hover { background: #e09517; }
+        .btn-clear { background: #4f545c; color: white; }
+        .btn-clear:hover { background: #72767d; }
+        .btn-danger { background: #f04747; color: white; }
+        .btn-danger:hover { background: #d83a3a; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📡 РАДАР АКТИВНОСТІ</h2>
+    
+    <label for="username">Твій Нікнейм:</label>
+    <input type="text" id="username" placeholder="Введіть своє ім'я...">
+
+    <label for="activity">Вид дозвілля:</label>
+    <select id="activity">
+        <option value="🔊 Лише розмова">🔊 Лише розмова</option>
+        <option value="🎮 Гра">🎮 Гра</option>
+        <option value="💬 Лише текст">💬 Лише текст</option>
+    </select>
+
+    <label for="target-role">Кому надіслати сповіщення (Група):</label>
+    <select id="target-role">
+        <option value="ALL">🔊 Всім (Загальний пінг)</option>
+        <option value="GROUP_A">👥 Група знайомств А</option>
+        <option value="GROUP_B">👥 Група знайомств Б</option>
+    </select>
+
+    <hr style="border: 0; border-top: 1px solid #4f545c; margin: 20px 0;">
+
+    <label>ДОДАТИ ЧАС АКТИВНОСТІ (НАКОПИЧУЄТЬСЯ):</label>
+    <div class="grid-2">
+        <button class="btn-main" onclick="handleAction('active', 10)">+10 хв</button>
+        <button class="btn-main" onclick="handleAction('active', 30)">+30 хв</button>
+    </div>
+    <div class="grid-2">
+        <button class="btn-main" onclick="handleAction('active', 60)">+1 год</button>
+        <button class="btn-main" onclick="handleAction('active', 120)">+2 год</button>
+    </div>
+    
+    <label>ЗАПЛАНУВАТИ ПАУЗУ (ДОДАЄ ЧАС ПЕРЕРВИ):</label>
+    <div class="grid-2">
+        <button class="btn-pause" onclick="handleAction('pause', 10)">+10 хв паузи</button>
+        <button class="btn-pause" onclick="handleAction('pause', 30)">+30 хв паузи</button>
+    </div>
+    <div class="grid-2">
+        <button class="btn-pause" onclick="handleAction('pause', 60)">+1 год паузи</button>
+        <button class="btn-pause" onclick="handleAction('pause', 120)">+2 год паузи</button>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #4f545c; margin: 15px 0;">
+
+    <button class="btn-clear" onclick="handleAction('clear_time')">🔄 Очистити лише час (Скинути)</button>
+    <button class="btn-danger" style="margin-top: 5px;" onclick="handleAction('offline')">🔴 Відмінити слот (Офлайн)</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
