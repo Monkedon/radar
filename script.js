@@ -1,7 +1,7 @@
 const ENCODED_WEBHOOK = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTUyNDA3MDI2NDk0ODc4OTUzOS9yQ1QzRUhrU1hxRUVCRHlGbC1pVFRMSUF4YmtjNHVFRmZ4Smp6TWNKNGFTMlZIb0ZlUnFqVXlTTXAzemZTWE1DNnFzag=="; 
 
 const DISCORD_ROLES = {
-    "ALL": "@here",                 
+    "ALL": "@C21",                 
     "GROUP_A": "<@&123456789012345678>", 
     "GROUP_B": "<@&876543210987654321>"  
 };
